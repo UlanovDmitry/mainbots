@@ -1,0 +1,12 @@
+{
+    "modinfo": {
+        "modId": "recipeexporter",
+        "name": "Recipe Exporter",
+        "description": "Exports all crafting and smelting recipes to JSON file",
+        "version": "${VERSION}",
+        "mcversion": "${MCVERSION}",
+        "authorList": ["Player"],
+        "parent": "",
+        "useDependencyInformation": false
+    }
+}

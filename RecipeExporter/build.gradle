@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://repo.maven.apache.org/maven2' }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = '1.0'
+group = 'com.example.recipeexporter'
+archivesBaseName = 'RecipeExporter'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+minecraft {
+    version = '1.12.2-14.23.5.2860'
+    runDir = 'run'
+    mappings = 'stable_39'
+    replace '@VERSION@', project.version
+    replace '@MCVERSION@', project.version
+}
+
+dependencies {
+    // IC2 для тестирования модовых рецептов (опционально)
+    // deobfCompile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+        rename '(.*)@(.*)@(.*)', '$1' + project.version + '$3'
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.info'
+    }
+}
