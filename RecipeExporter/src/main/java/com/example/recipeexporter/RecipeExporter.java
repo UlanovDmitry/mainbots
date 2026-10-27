@@ -79,7 +79,11 @@ public class RecipeExporter {
 
             // Get the IRecipe registry (1.12.2 API)
             IForgeRegistry<IRecipe> registry = net.minecraftforge.fml.common.registry.GameRegistry.findRegistry(IRecipe.class);
-            
+            if (registry == null) {
+                System.err.println("[RecipeExporter] IRecipe registry is null!");
+                return;
+            }
+
             for (IRecipe recipe : registry.getValuesCollection()) {
                 try {
                     Map<String, Object> recipeData = extractRecipeData(recipe);
@@ -87,7 +91,8 @@ public class RecipeExporter {
                         collectedRecipes.add(recipeData);
                     }
                 } catch (Exception e) {
-                    System.err.println("Error processing recipe: " + e.getMessage());
+                    System.err.println("[RecipeExporter] Error processing recipe: " + recipe.getRegistryName() + " - " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
@@ -118,14 +123,23 @@ public class RecipeExporter {
             }
 
             // Extract ingredients based on recipe type
-            if (recipe instanceof IShapedRecipe) {
-                extractShapedRecipeData((IShapedRecipe<?>) recipe, data);
-            } else if (recipe instanceof IShapelessRecipe) {
-                extractShapelessRecipeData((IShapelessRecipe) recipe, data);
+            if (recipe.getClass().getPackage().getName().startsWith("net.minecraft")) {
+                if (recipe instanceof IShapedRecipe) {
+                    extractShapedRecipeData((IShapedRecipe<?>) recipe, data);
+                } else if (recipe instanceof IShapelessRecipe) {
+                    extractShapelessRecipeData((IShapelessRecipe) recipe, data);
+                }
+            } else {
+                // Для модовых рецептов — базовая информация
+                data.put("type", recipe.getClass().getName());
+                data.put("modded", true);
             }
 
             // Get remaining items if available
             try {
+                if (!recipe.isSimple()) {
+                    return null;
+                }
                 Method method = recipe.getClass().getMethod("getRemainingItems");
                 ItemStack[] remaining = (ItemStack[]) method.invoke(recipe);
                 if (remaining != null) {

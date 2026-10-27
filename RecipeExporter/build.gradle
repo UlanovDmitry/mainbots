@@ -39,3 +39,11 @@ processResources {
         exclude '**/*.info'
     }
 }
+
+// Custom clean task
+clean {
+    delete 'run'
+}
+
+// Ensure dependencies are resolved before build
+tasks.build.dependsOn('setupDecompWorkspace')

@@ -1,6 +1,6 @@
-{
-    "modinfo": {
-        "modId": "recipeexporter",
+[
+    {
+        "modid": "recipeexporter",
         "name": "Recipe Exporter",
         "description": "Exports all crafting and smelting recipes to JSON file",
         "version": "${VERSION}",
@@ -9,4 +9,4 @@
         "parent": "",
         "useDependencyInformation": false
     }
-}
+]

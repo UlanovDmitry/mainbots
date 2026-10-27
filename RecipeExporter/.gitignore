@@ -1,7 +1,6 @@
-# Gradle
-.gradle/
+# Build outputs
 build/
-!gradle-wrapper.jar
+run/
 
 # IDE
 .idea/
@@ -9,17 +8,13 @@ build/
 *.iws
 *.ipr
 .vscode/
-.project
-.classpath
-.settings/
+out/
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Logs
-logs/
-*.log
-
-# Recipe Export
-recipe_exporter/
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
